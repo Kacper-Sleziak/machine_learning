@@ -7,7 +7,7 @@ from scipy.spatial.distance import cdist
 from sklearn.neighbors import KNeighborsClassifier
 
 
-class CustomeClassifier(BaseEstimator, ClassifierMixin):
+class CustomClassifier(BaseEstimator, ClassifierMixin):
 
     def __init__(self, k):
         self.k = k
@@ -41,7 +41,7 @@ k = 5
 X, y = make_classification(500)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
-model = CustomeClassifier(k)
+model = CustomClassifier(k)
 model.fit(X_train, y_train)
 predicted_labels = model.predict(X_test)
 custom_model_accuracy = accuracy_score(y_test, predicted_labels)
