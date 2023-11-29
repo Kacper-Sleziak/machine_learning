@@ -7,16 +7,17 @@ from sklearn.metrics import accuracy_score
 
 class CustomClassifier(BaseEstimator, ClassifierMixin):
     def fit(self, X, y):
-
         self.classes_size = len(np.unique(y))
         return self
-    
+
     def predict(self, X):
         return np.random.choice(self.classes_size, len(X))
 
+    def __name__(self):
+        return "CustomClassifier"
+
 
 model = CustomClassifier()
-
 X, y = make_classification(500)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 

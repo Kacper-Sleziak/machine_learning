@@ -27,14 +27,14 @@ def save_results(data_functions, classifiers):
 
     for classifier in classifiers:
         classifier_results = defaultdict()
-        classifier_name = classifier.__name__
+
+        model = classifier()
+        classifier_name = model.__name__()
 
         for data_function in data_functions:
-            function_name = data_function.__name__
+            X, y = data_function[0]
+            function_name = data_function[1]
 
-            X, y = data_function()
-
-            model = CustomClassifier()
             score_kf_2, score_kf_5 = get_scores(model, X, y)
             function_results = {
                 "kf2": score_kf_2,
@@ -68,12 +68,13 @@ def get_scores(model, X, y):
     return score_kf_2, score_kf_5
 
 
-data_functions = (make_moons, make_circles, make_gaussian_quantiles)
+data_functions = (
+    [make_moons(), "make_moon"],
+    [make_circles(), "make_circles"],
+    [make_gaussian_quantiles(), "make_gaussian_quantiles"],
+    [make_gaussian_quantiles(cov=1.8), "make_gaussian_quantiles2"]
+)
 classifiers = (CustomClassifier, CustomClassifier2)
 
 classifiers_results = save_results(data_functions, classifiers)
-
-
-ic(classifiers_results)
-ic("")
 ic(classifiers_results)
