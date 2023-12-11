@@ -3,6 +3,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import KFold, cross_val_score, train_test_split
+from sklearn.preprocessing import StandardScaler
 from collections import defaultdict
 
 def save_results(data_functions, classifiers):
@@ -34,7 +35,15 @@ def save_results(data_functions, classifiers):
 def get_scores(model, X, y):
     kf_2 = KFold(n_splits=2)
     kf_5 = KFold(n_splits=5)
+
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+
+    # Added scaler
+    scaler = StandardScaler()
+    scaler.fit(X_train)
+
+    X_train = scaler.transform(X_train)
+    X_test = scaler.transform(X_test)
 
     model.fit(X_train, y_train)
 
