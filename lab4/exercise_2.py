@@ -21,8 +21,8 @@ def save_results(data_functions, classifiers):
             data = data_function[0]
             function_name = data_function[1]
 
-            score = get_score_one_scaled(model, data)
-            score2 = get_score_one_scaled(model, data, True)
+            score = get_score(model, data)
+            score2 = get_score(model, data, True)
             function_results = {
                 "rkf_scaled_one": score,
                 "rkf_both_scaled": score2,
@@ -34,7 +34,7 @@ def save_results(data_functions, classifiers):
     return classifiers_results
 
 
-def get_score_one_scaled(model, data, scale_both=False):
+def get_score(model, data, scale_both=False):
     X, y = data
     rkf = RepeatedStratifiedKFold(n_splits=2, n_repeats=5)
     scaler = StandardScaler()
