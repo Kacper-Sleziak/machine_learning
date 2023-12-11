@@ -1,10 +1,12 @@
-from sklearn.datasets import load_breast_cancer
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.naive_bayes import GaussianNB
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.model_selection import KFold, cross_val_score, train_test_split
-from sklearn.preprocessing import StandardScaler
 from collections import defaultdict
+
+from sklearn.datasets import load_breast_cancer
+from sklearn.model_selection import KFold, cross_val_score, train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.preprocessing import StandardScaler
+from sklearn.tree import DecisionTreeClassifier
+
 
 def save_results(data_functions, classifiers):
     classifiers_results = defaultdict()
@@ -57,8 +59,12 @@ def print_means_and_deviations(classifiers_results):
         "gaussian_kf5": classifiers_results["GaussianNB"]["cancer"]["kf5"],
         "knearest_kf2": classifiers_results["KNeighborsClassifier"]["cancer"]["kf2"],
         "knearest_kf5": classifiers_results["KNeighborsClassifier"]["cancer"]["kf5"],
-        "decision_tree_kf2": classifiers_results["DecisionTreeClassifier"]["cancer"]["kf2"],
-        "decision_tree_kf5": classifiers_results["DecisionTreeClassifier"]["cancer"]["kf5"],
+        "decision_tree_kf2": classifiers_results["DecisionTreeClassifier"]["cancer"][
+            "kf2"
+        ],
+        "decision_tree_kf5": classifiers_results["DecisionTreeClassifier"]["cancer"][
+            "kf5"
+        ],
     }
 
     print("---STANDARD DEVIATION---")
@@ -70,6 +76,7 @@ def print_means_and_deviations(classifiers_results):
     print("---MEAN VALUE---")
     for key, value in cross_val_scores.items():
         print(f"{key} - {value.mean():.3f}")
+
 
 data = load_breast_cancer()
 classifiers = (KNeighborsClassifier, GaussianNB, DecisionTreeClassifier)
@@ -102,4 +109,3 @@ data_functions = ([data, "cancer"],)
 classifiers_results = save_results(data_functions, classifiers)
 print("TRAINING AND TEST DATA SCALED")
 print_means_and_deviations(classifiers_results)
-

@@ -1,9 +1,11 @@
-from sklearn.datasets import load_breast_cancer
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.naive_bayes import GaussianNB
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.model_selection import KFold, cross_val_score, train_test_split
 from collections import defaultdict
+
+from sklearn.datasets import load_breast_cancer
+from sklearn.model_selection import KFold, cross_val_score, train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.tree import DecisionTreeClassifier
+
 
 def save_results(data_functions, classifiers):
     classifiers_results = defaultdict()
