@@ -3,9 +3,11 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import KFold, cross_val_score, train_test_split
+from sklearn.feature_selection import SelectKBest, chi2
 from sklearn.preprocessing import StandardScaler
 from collections import defaultdict
-
+from sklearn.decomposition import PCA
+import numpy as np
 def save_results(data_functions, classifiers):
     classifiers_results = defaultdict()
 
@@ -71,35 +73,42 @@ def print_means_and_deviations(classifiers_results):
     for key, value in cross_val_scores.items():
         print(f"{key} - {value.mean():.3f}")
 
+
+
 data = load_breast_cancer()
 classifiers = (KNeighborsClassifier, GaussianNB, DecisionTreeClassifier)
 X = data.data
 y = data.target
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
-scaler = StandardScaler()
-scaler.fit(X_train)
-X_train = scaler.transform(X_train)
 
 ###
-# Standard Scaler for training data only
+# PCA for training data only
 ###
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+pca = PCA(0.8)
+X_train = pca.fit_transform(X_train)
+
 data = (X_train, X_test, y_train, y_test)
 data_functions = ([data, "cancer"],)
 classifiers_results = save_results(data_functions, classifiers)
 
-print("TRAINING DATA SCALED")
+print("PCA: TRAINING DATA PREPROCESSED")
 print_means_and_deviations(classifiers_results)
 
 print("\n\n")
 
 ###
-# Standard Scaler for training and test data
+# SelectKBest for training data only
 ###
-X_test = scaler.transform(X_test)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+select_k_best = SelectKBest(chi2, k=int(np.sqrt(X.shape[1])))
+select_k_best.fit(X_train, y_train)
+X_train = select_k_best.transform(X_train)
+
 data = (X_train, X_test, y_train, y_test)
 data_functions = ([data, "cancer"],)
-
 classifiers_results = save_results(data_functions, classifiers)
-print("TRAINING AND TEST DATA SCALED")
+
+print("SelectKBest: TRAINING DATA PREPROCESSED")
 print_means_and_deviations(classifiers_results)
+
 
