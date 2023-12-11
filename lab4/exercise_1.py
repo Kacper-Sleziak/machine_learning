@@ -1,6 +1,7 @@
 from sklearn.datasets import load_breast_cancer
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import KFold, cross_val_score, train_test_split
 from collections import defaultdict
 
@@ -38,7 +39,6 @@ def save_results(data_functions, classifiers):
                 "kf2": score_kf_2,
                 "kf5": score_kf_5,
             }
-            # add_means_and_deviations(function_results)
 
             classifier_results[function_name] = function_results
         classifiers_results[classifier_name] = classifier_results
@@ -60,7 +60,7 @@ def get_scores(model, X, y):
 
 data = load_breast_cancer
 data_functions = ([data(), "cancer"],)
-classifiers = (KNeighborsClassifier, GaussianNB)
+classifiers = (KNeighborsClassifier, GaussianNB, DecisionTreeClassifier)
 classifiers_results = save_results(data_functions, classifiers)
 
 cross_val_scores = {
@@ -68,12 +68,16 @@ cross_val_scores = {
     "gaussian_kf5": classifiers_results["GaussianNB"]["cancer"]["kf5"],
     "knearest_kf2": classifiers_results["KNeighborsClassifier"]["cancer"]["kf2"],
     "knearest_kf5": classifiers_results["KNeighborsClassifier"]["cancer"]["kf5"],
+    "decision_tree_kf2": classifiers_results["DecisionTreeClassifier"]["cancer"]["kf2"],
+    "decision_tree_kf5": classifiers_results["DecisionTreeClassifier"]["cancer"]["kf5"],
 }
 
+print("---STANDARD DEVIATION---")
 for key, value in cross_val_scores.items():
-    print(f"Standard deviation for {key} - {value.std():.3f}")
+    print(f"{key} - {value.std():.3f}")
 
 print("")
 
+print("---MEAN VALUE---")
 for key, value in cross_val_scores.items():
-    print(f"Mean value for {key} - {value.mean():.3f}")
+    print(f"{key} - {value.mean():.3f}")
