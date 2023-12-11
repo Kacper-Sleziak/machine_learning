@@ -40,7 +40,7 @@ def save_results(data_functions, classifiers):
                 "kf2": score_kf_2,
                 "kf5": score_kf_5,
             }
-            add_means_and_deviations(function_results)
+            # add_means_and_deviations(function_results)
 
             classifier_results[function_name] = function_results
         classifiers_results[classifier_name] = classifier_results

@@ -1,1 +1,79 @@
 from sklearn.datasets import load_breast_cancer
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.naive_bayes import GaussianNB
+from sklearn.model_selection import KFold, cross_val_score, train_test_split
+from collections import defaultdict
+
+def save_results(data_functions, classifiers):
+    """
+    for every classifier:
+
+    format_of_kf = {
+        'kf2': [],
+        'kf5': []
+    }^
+
+    format_of_results = {
+        'make_circles': format_of_kf,
+        'make_gaussian_quantiles': format_of_kf,
+        'make_moons': format_of_kf
+        }
+    """
+
+    classifiers_results = defaultdict()
+
+    for classifier in classifiers:
+        classifier_results = defaultdict()
+
+        model = classifier()
+        classifier_name = model.__class__.__name__
+
+        for data_function in data_functions:
+            X = data_function[0].data
+            y = data_function[0].target
+            function_name = data_function[1]
+
+            score_kf_2, score_kf_5 = get_scores(model, X, y)
+            function_results = {
+                "kf2": score_kf_2,
+                "kf5": score_kf_5,
+            }
+            # add_means_and_deviations(function_results)
+
+            classifier_results[function_name] = function_results
+        classifiers_results[classifier_name] = classifier_results
+
+    return classifiers_results
+
+
+def get_scores(model, X, y):
+    kf_2 = KFold(n_splits=2)
+    kf_5 = KFold(n_splits=5)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+
+    model.fit(X_train, y_train)
+
+    score_kf_2 = cross_val_score(model, X_test, y_test, cv=kf_2)
+    score_kf_5 = cross_val_score(model, X_test, y_test, cv=kf_5)
+    return score_kf_2, score_kf_5
+
+
+data = load_breast_cancer
+data_functions = ([data(), "cancer"],)
+classifiers = (KNeighborsClassifier, GaussianNB)
+classifiers_results = save_results(data_functions, classifiers)
+
+cross_val_scores = {
+    "gaussian_kf2": classifiers_results["GaussianNB"]["cancer"]["kf2"],
+    "gaussian_kf5": classifiers_results["GaussianNB"]["cancer"]["kf5"],
+    "knearest_kf2": classifiers_results["KNeighborsClassifier"]["cancer"]["kf2"],
+    "knearest_kf5": classifiers_results["KNeighborsClassifier"]["cancer"]["kf5"],
+}
+
+for key, value in cross_val_scores.items():
+    print(f"Standard deviation for {key} - {value.std():.3f}")
+
+print("")
+
+for key, value in cross_val_scores.items():
+    print(f"Mean value for {key} - {value.mean():.3f}")
