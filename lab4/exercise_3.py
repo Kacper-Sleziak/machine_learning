@@ -100,7 +100,7 @@ classifiers_results = save_results(data_functions, classifiers)
 print("PCA")
 print_means_and_deviations(classifiers_results)
 
-print("\n\n")
+print("\n")
 
 ###
 # Standard Scaler for training and test data

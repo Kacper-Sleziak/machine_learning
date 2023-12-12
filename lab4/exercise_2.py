@@ -94,7 +94,7 @@ classifiers_results = save_results(data_functions, classifiers)
 print("TRAINING DATA SCALED")
 print_means_and_deviations(classifiers_results)
 
-print("\n\n")
+print("\n")
 
 ###
 # Standard Scaler for training and test data
