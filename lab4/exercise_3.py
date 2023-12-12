@@ -7,6 +7,7 @@ from sklearn.feature_selection import SelectKBest
 from sklearn.model_selection import RepeatedStratifiedKFold, cross_val_score
 from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.pipeline import make_pipeline
 from sklearn.tree import DecisionTreeClassifier
 
 
@@ -55,14 +56,16 @@ def get_score(model, data, kbest=False):
             X_test = pca.fit_transform(X_test)
 
         model.fit(X_train, y_train)
-        y_pred = model.predict(X_test)
+        score = cross_val_score(model, X_test, y_test)
 
-        accuracy = (y_pred == y_test).mean()
-        scores.append(accuracy)
+        score_sum = 0
+        for s in score:
+            score_sum += s
 
-    score_skf = cross_val_score(model, X, y, cv=rkf)
+        score = score_sum / len(score)
+        scores.append(score)
 
-    return score_skf
+    return np.array(scores)
 
 
 def print_means_and_deviations(classifiers_results, choice="rkf_pca"):
