@@ -1,14 +1,12 @@
 from collections import defaultdict
 
-
 import numpy as np
 from sklearn.datasets import load_breast_cancer
-from sklearn.model_selection import RepeatedStratifiedKFold, cross_val_score
 from sklearn.decomposition import PCA
-from sklearn.feature_selection import SelectKBest, chi2
+from sklearn.feature_selection import SelectKBest
+from sklearn.model_selection import RepeatedStratifiedKFold, cross_val_score
 from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.preprocessing import StandardScaler
 from sklearn.tree import DecisionTreeClassifier
 
 
@@ -72,7 +70,9 @@ def print_means_and_deviations(classifiers_results, choice="rkf_pca"):
     cross_val_scores_scaled_one = {
         "gaussian_rkf": classifiers_results["GaussianNB"]["cancer"][choice],
         "knearest_rkf": classifiers_results["KNeighborsClassifier"]["cancer"][choice],
-        "decision_tree_rkf": classifiers_results["DecisionTreeClassifier"]["cancer"][choice],
+        "decision_tree_rkf": classifiers_results["DecisionTreeClassifier"]["cancer"][
+            choice
+        ],
     }
 
     print("---STANDARD DEVIATION---")
@@ -94,8 +94,7 @@ y = data.target
 ###
 # Standard Scaler for training data only
 ###
-data = (X, y)
-data_functions = ([data, "cancer"],)
+data_functions = ([(X, y), "cancer"],)
 classifiers_results = save_results(data_functions, classifiers)
 
 print("PCA")

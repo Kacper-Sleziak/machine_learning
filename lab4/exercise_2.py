@@ -64,7 +64,9 @@ def print_means_and_deviations(classifiers_results, choice="rkf_scaled_one"):
     cross_val_scores_scaled_one = {
         "gaussian_rkf": classifiers_results["GaussianNB"]["cancer"][choice],
         "knearest_rkf": classifiers_results["KNeighborsClassifier"]["cancer"][choice],
-        "decision_tree_rkf": classifiers_results["DecisionTreeClassifier"]["cancer"][choice],
+        "decision_tree_rkf": classifiers_results["DecisionTreeClassifier"]["cancer"][
+            choice
+        ],
     }
 
     print("---STANDARD DEVIATION---")
@@ -86,8 +88,7 @@ y = data.target
 ###
 # Standard Scaler for training data only
 ###
-data = (X, y)
-data_functions = ([data, "cancer"],)
+data_functions = ([(X, y), "cancer"],)
 classifiers_results = save_results(data_functions, classifiers)
 
 print("TRAINING DATA SCALED")
