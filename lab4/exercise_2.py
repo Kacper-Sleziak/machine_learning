@@ -51,7 +51,6 @@ def get_score(model, data, scale_both=False):
         model.fit(X_train, y_train)
         y_pred = model.predict(X_test)
 
-        # Evaluate the model
         accuracy = (y_pred == y_test).mean()
         scores.append(accuracy)
 
@@ -99,6 +98,5 @@ print("\n\n")
 ###
 # Standard Scaler for training and test data
 ###
-classifiers_results = save_results(data_functions, classifiers)
 print("TRAINING AND TEST DATA SCALED")
 print_means_and_deviations(classifiers_results, choice="rkf_both_scaled")
