@@ -1,23 +1,19 @@
-import os
-
-import numpy as np
-from sklearn.base import clone
+from sklearn.datasets import make_classification
+from sklearn.naive_bayes import GaussianNB
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import RepeatedStratifiedKFold
-from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.tree import DecisionTreeClassifier
+import numpy as np
+import os
+from sklearn.base import clone
 
 rskf = RepeatedStratifiedKFold(n_splits=2, n_repeats=5)
-classifiers = [
-    GaussianNB(),
-    KNeighborsClassifier(),
-    DecisionTreeClassifier(random_state=8),
-]
+classifiers = [GaussianNB(), KNeighborsClassifier(), DecisionTreeClassifier(random_state=8)]
+results = np.empty(shape=(len(os.listdir('datasets')), 10, len(classifiers)))
 
-results = np.empty(shape=(len(os.listdir("datasets")), 10, len(classifiers)))
-for dataset_index, dataset_file in enumerate(os.listdir("datasets")):
-    dataset = np.loadtxt("datasets/" + dataset_file, delimiter=",")
+for dataset_index, dataset_file in enumerate(os.listdir('datasets')):
+    dataset = np.loadtxt('datasets/' + dataset_file, delimiter=",")
     X = dataset[:, :-1]
     y = dataset[:, -1]
 
@@ -33,4 +29,4 @@ for dataset_index, dataset_file in enumerate(os.listdir("datasets")):
 #     print()
 #     print("Result "+classifier+": "+str(round(np.mean(results[j]), 3))+"+/-"+str(round(np.std(results[j]), 3)))
 
-np.save("datasets.npy", results)
+np.save('datasets.npy', results)
