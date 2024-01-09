@@ -37,8 +37,7 @@ print(cross)
 def find_better_pair(val1, val2, name1, name2) -> str:
     if val1 > val2:
         return f"{name1} with {val1} better than {name2} with {val2}"
-    else:
-        return f"{name2} with {val2} better than {name1} with {val1}"
+    return f"{name2} with {val2} better than {name1} with {val1}"
 
 
 print(find_better_pair(ranks[0], ranks[1], classifiers_names[0], classifiers_names[1]))
