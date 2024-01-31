@@ -33,7 +33,6 @@ print(results)
 print(alpha)
 print(cross)
 
-
 def find_better_pair(val1, val2, name1, name2) -> str:
     if val1 > val2:
         return f"{name1} with {val1} better than {name2} with {val2}"
